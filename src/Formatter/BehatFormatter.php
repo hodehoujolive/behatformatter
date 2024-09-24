@@ -12,6 +12,7 @@ use Behat\Behat\EventDispatcher\Event\BeforeScenarioTested;
 use Behat\Behat\Tester\Result\ExecutedStepResult;
 use Behat\Testwork\Counter\Memory;
 use Behat\Testwork\Counter\Timer;
+use DateTime;
 use Behat\Testwork\EventDispatcher\Event\AfterExerciseCompleted;
 use Behat\Testwork\EventDispatcher\Event\AfterSuiteTested;
 use Behat\Testwork\EventDispatcher\Event\BeforeExerciseCompleted;
@@ -27,6 +28,8 @@ use elkan\BehatFormatter\Printer\FileOutputPrinter;
 use elkan\BehatFormatter\Renderer\BaseRenderer;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use elkan\BehatFormatter\Context;
+
+global $suiteStartDate, $suiteEndDate, $featureStartDate, $featureEndDate, $scenarioStartDate, $scenarioEndDate, $stepStartDate, $stepEndDate;
 
 
 /**
@@ -50,6 +53,10 @@ class BehatFormatter implements Formatter {
      * @var
      */
     private $timer;
+        /**
+     * @var
+     */
+    private $timerFeature;
 
     /**
      * @var
@@ -217,6 +224,7 @@ class BehatFormatter implements Formatter {
         $this->renderer = new BaseRenderer($renderer, $base_path);
         $this->printer = new FileOutputPrinter($this->renderer->getNameList(), $filename, $base_path);
         $this->timer = new Timer();
+        $this->timerFeature = new Timer();
         $this->memory = new Memory();
 
     }
@@ -456,6 +464,10 @@ class BehatFormatter implements Formatter {
     {
         return $this->timer;
     }
+    public function getTimerFeature()
+    {
+        return $this->timerFeature;
+    }
 
     public function getMemory()
     {
@@ -581,6 +593,9 @@ class BehatFormatter implements Formatter {
      */
     public function onBeforeFeatureTested(BeforeFeatureTested $event)
     {
+        // datetime
+        $GLOBALS['featureStartDate'] = new DateTime(date("Y-m-d H:i:s"));
+
         $feature = new Feature();
         $feature->setId($this->featureCounter);
         $this->featureCounter++;
@@ -600,6 +615,13 @@ class BehatFormatter implements Formatter {
      */
     public function onAfterFeatureTested(AfterFeatureTested $event)
     {
+        // datetime
+        $endTime = new DateTime(date("Y-m-d H:i:s"));
+        $GLOBALS['featureEndDate'] = $GLOBALS['featureStartDate']->diff($endTime);
+        // setDuration for the Feature
+        $this->currentFeature->setTime($GLOBALS['featureEndDate']->format("%H:%I:%S"));
+
+
         $this->currentSuite->addFeature($this->currentFeature);
         if($this->currentFeature->allPassed()) {
             $this->passedFeatures[] = $this->currentFeature;
@@ -616,6 +638,10 @@ class BehatFormatter implements Formatter {
      */
     public function onBeforeScenarioTested(BeforeScenarioTested $event)
     {
+
+        // datetime
+        $GLOBALS['scenarioStartDate'] = new DateTime(date("Y-m-d H:i:s"));
+
         $scenario = new Scenario();
         $scenario->setName($event->getScenario()->getTitle());
         $scenario->setTags($event->getScenario()->getTags());
@@ -632,6 +658,14 @@ class BehatFormatter implements Formatter {
      */
     public function onAfterScenarioTested(AfterScenarioTested $event)
     {
+
+        // datetime
+        $endTime = new DateTime(date("Y-m-d H:i:s"));
+        $GLOBALS['scenarioEndDate'] = $GLOBALS['scenarioStartDate']->diff($endTime);
+        // setDuration for the Feature
+        $this->currentScenario->setTime($GLOBALS['scenarioEndDate']->format("%H:%I:%S"));
+
+
         $scenarioPassed = $event->getTestResult()->isPassed();
 
         if($scenarioPassed) {

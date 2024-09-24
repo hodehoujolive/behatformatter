@@ -17,6 +17,7 @@ class Feature
     private $description;
     private $tags;
     private $file;
+    private $time;
     private $screenshotFolder;
     private $failedScenarios = 0;
     private $passedScenarios = 0;
@@ -43,6 +44,22 @@ class Feature
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return time
+     */
+    public function getTime()
+    {
+      return $this->time;
+    }
+
+    /**
+     * @param time
+     */
+    public function setTime($time)
+    {
+      $this->time = $time;
     }
 
     /**

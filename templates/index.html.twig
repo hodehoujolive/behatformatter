@@ -112,6 +112,14 @@
                                 </td>
                                 <td></td>
                             </tr>
+                          <tr>
+                                <th> Build time:</th>
+                                <td>
+                                    {{ Timer }}
+                                </td>
+                                <td></td>
+                            </tr>
+
                             <tr>
                                 <th>Run</th>
                                 <td>
@@ -235,6 +243,152 @@
                         </table>
                     </div><!-- /panel -->
                 </div><!-- /.col -->
+                </div>
+
+
+
+
+
+
+
+
+
+                            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2>Behat Test report</h2>
+                        </div>
+                        <table class="table table-hover table-striped">
+                            <tbody>
+
+                          <tr>
+                                <th> Names of Features:</th>
+                                
+                                {% for suite in suites %}
+                                {% for feature in suite.features %}
+<td>
+                                {{ feature.name }}
+ </td>
+                                {% endfor %}
+                                {% endfor %}
+
+
+
+                               
+                                <td></td>
+                            </tr>
+
+                                                      <tr>
+                                <th> Duration of features:</th>
+                                
+                                {% for suite in suites %}
+                                {% for feature in suite.features %}
+<td>
+                                {{ feature.time }}
+ </td>
+                                {% endfor %}
+                                {% endfor %}
+
+
+
+                               
+                                <td></td>
+                            </tr>
+
+<tr>
+                                <th> Statut of Features:</th>
+                                
+                                {% for suite in suites %}
+                                {% for feature in suite.features %}
+<td>
+                               
+                                                    {% if feature.passedScenarios == 1 %}
+                                                        Passed
+                                                    {% endif %}
+						    {% if feature.passedScenarios == 0 %}
+                                                        Failed
+                                                    {% endif %}
+ </td>
+                                {% endfor %}
+                                {% endfor %}
+
+
+
+                               
+                                <td></td>
+    </tr>
+
+                              <tr>
+                                <th> Names of Scenario:</th>
+                                
+                                {% for suite in suites %}
+                                {% for feature in suite.features %}
+                                {% for scenario in feature.scenarios %}
+<td>
+                                {{ scenario.name }}
+ </td>
+                                {% endfor %}
+                                {% endfor %}
+                                {% endfor %}
+
+
+
+                               
+                                <td></td>
+                            </tr>
+ <tr>
+                                <th> Duration of Scenario:</th>
+                                
+                                {% for suite in suites %}
+                                {% for feature in suite.features %}
+                                {% for scenario in feature.scenarios %}
+<td>
+                                {{ scenario.time }}
+ </td>
+                                {% endfor %}
+                                {% endfor %}
+                                {% endfor %}
+
+
+
+                               
+                                <td></td>
+                            </tr>
+
+
+
+                            <tr>
+                                <th> Statut of scenario:</th>
+                                
+                                {% for suite in suites %}
+                                {% for feature in suite.features %}
+                                {% for scenario in feature.scenarios %}
+<td>
+                               
+                                                    {% if scenario.passed == true %}
+                                                        Passed
+                                                    {% endif %}
+						    {% if scenario.passed == false %}
+                                                        Failed
+                                                    {% endif %}
+ </td>
+                                {% endfor %}
+                                {% endfor %}
+                                {% endfor %}
+
+
+
+                               
+                                <td></td>
+    </tr>
+
+                            </tbody>
+                        </table>
+                    </div><!-- /panel -->
+                </div><!-- /.col -->
+
+               
             </div><!-- /.row -->
             <div class="row">
                 <div class="col-sm-12">

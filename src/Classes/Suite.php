@@ -13,6 +13,7 @@ class Suite
 {
     private $name;
     private $features;
+    private $time;
     private $totalFeatures;
     private $failedFeatures;
     private $successFeatures;
@@ -31,6 +32,22 @@ class Suite
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTime()
+    {
+      return $this->time;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setTime($time)
+    {
+      $this->time = $time;
     }
 
     /**
